@@ -1,2 +1,2 @@
-# django-todo
+# Django Todo
 Todo app réalisée avec Django.
