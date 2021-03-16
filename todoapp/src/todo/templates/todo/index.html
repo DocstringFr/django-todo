@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+
+<div id="date">
+    <h1 id="full-date"><span id="day-number">{{ time|date:'d' }}</span> {{ time|date:'F Y' }}</h1>
+    <h1 id="day">{{ time|date:'l' }}</h1>
+</div>
+
+<section id="todos">
+    <div id="todos-center">
+        <div id="todos-list">
+            {% for todo in todos %}
+                <form action="{% url 'delete-todo' pk=todo.pk %}" method="POST">
+                    <div class="todo-block">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{ todo.pk }}">
+                        <h3 class="todo{% if todo.done %} done{% endif %}" data-pk="{{ todo.pk }}">{{ todo }}</h3>
+                        <button class="btn-delete-todo">x</button>
+                    </div>
+                </form>
+            {% endfor %}
+        </div>
+        {% if todos %}
+            <a href="{% url 'delete-all-todo' %}" id="delete-todos">Supprimer les todo terminés</a>
+        {% endif %}
+        <form id="todo-form" method="POST" action="{% url 'create-todo' %}">
+            {% csrf_token %}
+            <label for="todo-text-input"></label>
+            <input type="text" id="todo-text-input" name="title" placeholder="Quelque chose à faire..." autofocus>
+            <input type="submit" value="Ajouter" id="todo-btn">
+        </form>
+    </div>
+</section>
+
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
